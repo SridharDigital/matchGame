@@ -1,13 +1,15 @@
-import "./App.css"
-import "./style.css"
-import Home from "./components/Home"
+import { useEffect, useRef, useState } from "react"
+import TabsList from "./TabsList"
+import Image from "./Image"
+import Navbar from "./Navbar"
+import Result from "./Result"
 
-// These are the lists used in the application. You can move them to any component needed.
 const tabsList = [
   { tabId: "FRUIT", displayText: "Fruits" },
   { tabId: "ANIMAL", displayText: "Animals" },
   { tabId: "PLACE", displayText: "Places" },
 ]
+
 const imagesList = [
   {
     id: "b11ec8ce-35c9-4d67-a7f7-07516d0d8186",
@@ -248,13 +250,105 @@ const imagesList = [
   },
 ]
 
-// Replace your code here
-const App = () => {
+const defaultTimer = 60
+
+const Home = () => {
+  const [isGameEnded, setIsGameEnded] = useState(false)
+  const [timer, setTimer] = useState(defaultTimer)
+  const [matchImage, setMatchImage] = useState(imagesList[0])
+  const [currentTab, setCurrentTab] = useState(tabsList[0].tabId)
+  const [score, setScore] = useState(0)
+  let intervalID = useRef()
+
+  const filteredImagesList = imagesList.filter(
+    (image) => image.category === currentTab
+  )
+
+  const getNewMatchImage = () => {
+    const randomNum = Math.floor(Math.random() * imagesList.length)
+    setMatchImage(imagesList[randomNum])
+  }
+
+  const checkMatch = (id) => {
+    if (id === matchImage.id) {
+      setScore((score) => score + 1)
+    } else {
+      setIsGameEnded(true)
+    }
+    getNewMatchImage()
+  }
+
+  const onClickPlayAgain = () => {
+    setIsGameEnded(false)
+    setScore(0)
+    setTimer(defaultTimer)
+    handleTimer()
+  }
+  // const onClickTimer = () => {
+  //   setIsGameEnded(false)
+  //   setTimer(5)
+  // }
+
+  if (timer < 1) {
+    clearInterval(intervalID.current)
+  }
+
+  // if (isGameEnded) {
+  //   clearInterval(intervalID.current)
+  // }
+
+  const handleTimer = () => {
+    intervalID.current = setInterval(() => {
+      setTimer((pre) => pre - 1)
+    }, 1000)
+  }
+
+  useEffect(() => {
+    if (timer < 1) {
+      setIsGameEnded(true)
+      clearInterval(intervalID.current)
+    }
+  }, [timer])
+
+  useEffect(() => {
+    handleTimer()
+    return () => clearInterval(intervalID.current)
+  }, [])
+
   return (
-    <div>
-      <Home />
-    </div>
+    <>
+      <Navbar score={score} timer={timer} />
+
+      <div className="home">
+        {!isGameEnded ? (
+          <div className="home-content-container">
+            <img
+              src={matchImage.imageUrl}
+              className="current-image"
+              alt="match"
+            />
+            <div className="flexrow">
+              {tabsList.map((tab) => (
+                <TabsList
+                  tab={tab}
+                  key={tab.tabId}
+                  currentTab={currentTab}
+                  setCurrentTab={setCurrentTab}
+                />
+              ))}
+            </div>
+            <ul className="flexrow images-container">
+              {filteredImagesList.map((image) => (
+                <Image image={image} key={image.id} checkMatch={checkMatch} />
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <Result score={score} onClickPlayAgain={onClickPlayAgain} />
+        )}
+      </div>
+    </>
   )
 }
 
-export default App
+export default Home

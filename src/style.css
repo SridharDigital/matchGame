@@ -1,0 +1,119 @@
+/* <576 phone
+577-767 tablet portrait
+768-991 tablet landscape
+992-1199 normal styles
+>1200 big desktops */
+
+:root {
+    --primary: #2c0e3a;
+    --white: #ffffff;
+    --secondary: #fec653;
+    --cta: #cf60c8;
+  }
+
+p {
+    color: var(--white);
+}
+
+.flexrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flexcol  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.highlight-text {
+    color: var(--secondary);
+    font-weight: bold;
+}
+
+
+/* ............................................ */
+
+.navbar {
+    justify-content: space-between;
+    background-color: var(--primary);
+    padding-left: 24px;
+    padding-right: 24px;
+    height: 10vh;
+}
+
+.logo {
+    width: 200px;
+}
+
+.timer-icon {
+    width: 20px;
+    margin-right: 6px;
+    margin-left: 12px;
+}
+
+/* ........................home........................... */
+
+.home {
+    background-image: url("https://assets.ccbp.in/frontend/react-js/match-game-bg.png");
+    min-height: 90vh;
+}
+
+.home-content-container {
+    padding: 48px 36px 48px 36px;
+}
+
+.current-image {
+    width: 100%;
+}
+
+.images-container {
+    flex-wrap: wrap;
+    padding-left: 0px;
+}
+
+/* TabsList */
+
+.tab-name {
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 0px 8px 4px 8px ;
+    border: solid transparent;
+    border-width: 0px 0px 4px 0px;
+    cursor: pointer;
+
+}
+
+.current-tab {
+    color: var(--secondary);
+    border: solid var(--secondary);
+    border-width: 0px 0px 4px 0px;
+}
+
+/* Image.js */
+
+.image-thumbnail {
+    width: 100px;
+    margin: 12px;
+}
+
+/* result.js */
+
+.result-container {
+    padding: 48px 36px 48px 36px;
+}
+
+.result-content-container {
+    min-height: 90vh;
+    background-image: url("https://assets.ccbp.in/frontend/react-js/match-game-score-card-sm-bg.png");
+    background-size: cover;
+    
+}
+
+.trophy-image {
+    width: 70%;
+}
